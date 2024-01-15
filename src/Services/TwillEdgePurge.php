@@ -14,11 +14,6 @@ class TwillEdgePurge
         return Str::startsWith((string) Route::currentRouteName(), $prefix);
     }
 
-    public function purgeAll()
-    {
-        
-    }
-
     public function userMenu(): string
     {
         if (!$this->userCanPurge()) {
@@ -47,5 +42,10 @@ class TwillEdgePurge
     public function cdnIsConfigured(): bool
     {
         return config('twill-edge-purge.enabled');
+    }
+
+    public function purgeAll()
+    {
+        
     }
 }

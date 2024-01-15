@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use A17\Twill\Helpers\Capsule;
 use A17\Twill\Facades\TwillCapsules;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\Blade;
 use A17\Twill\TwillPackageServiceProvider;
 use A17\TwillEdgePurge\Services\TwillEdgePurge;
 
@@ -24,6 +25,8 @@ class ServiceProvider extends TwillPackageServiceProvider
             $this->configureMiddleware();
 
             $this->registerViews();
+
+            $this->registerBladeDirectives();
 
             parent::boot();
         }
@@ -84,5 +87,12 @@ class ServiceProvider extends TwillPackageServiceProvider
     public function registerViews(): void
     {
         $this->loadViewsFrom(__DIR__ . '/resources/views', Str::kebab($this->capsule->getPlural()));
+    }
+
+    public function registerBladeDirectives(): void
+    {
+        Blade::directive('TwillEdgPurgeUserMenu', function ($expression) {
+            return "{!! app(\A17\TwillEdgePurge\Services\TwillEdgePurge::class)->userMenu() !!}";
+        });
     }
 }
