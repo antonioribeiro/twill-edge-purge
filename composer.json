@@ -15,13 +15,13 @@
   },
   "autoload": {
     "psr-4": {
-      "A17\\TwillCdnInvalidation\\": "src"
+      "A17\\TwillEdgePurge\\": "src"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "A17\\TwillCdnInvalidation\\ServiceProvider"
+        "A17\\TwillEdgePurge\\ServiceProvider"
       ]
     }
   },
