@@ -2,11 +2,12 @@
 
 namespace A17\TwillEdgePurge\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use A17\Twill\Http\Controllers\Admin\ModuleController;
 use A17\TwillEdgePurge\Models\TwillEdgePurge;
+use A17\Twill\Models\Contracts\TwillModelContract;
+use A17\Twill\Http\Controllers\Admin\ModuleController;
 use A17\TwillEdgePurge\Repositories\TwillEdgePurgeRepository;
 
 class TwillEdgePurgeController extends ModuleController
@@ -27,12 +28,12 @@ class TwillEdgePurgeController extends ModuleController
     /**
      * @return \Illuminate\Contracts\View\View|JsonResponse|RedirectResponse
      */
-    public function index($parentModuleId = null)
+    public function index(int|null $parentModuleId = null): mixed
     {
         return redirect()->route($this->namePrefix() . 'TwillEdgePurge.redirectToEdit');
     }
 
-    public function edit($id, $submoduleId = null)
+    public function edit(TwillModelContract|int $id): mixed
     {
         $repository = new TwillEdgePurgeRepository(new TwillEdgePurge());
 
