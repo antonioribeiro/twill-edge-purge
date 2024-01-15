@@ -42,7 +42,7 @@ class ServiceProvider extends TwillPackageServiceProvider
             // false, // automatic navigation   ------------ Not available on Twill yet
         );
 
-        app()->singleton(TwillEdgePurge::class, fn() => new TwillEdgePurge());
+        // app()->singleton(TwillEdgePurge::class, fn() => new TwillEdgePurge());
     }
 
     public function registerConfig(): bool

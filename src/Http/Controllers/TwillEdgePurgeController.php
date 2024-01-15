@@ -9,6 +9,7 @@ use A17\TwillEdgePurge\Models\TwillEdgePurge;
 use A17\Twill\Models\Contracts\TwillModelContract;
 use A17\Twill\Http\Controllers\Admin\ModuleController;
 use A17\TwillEdgePurge\Repositories\TwillEdgePurgeRepository;
+use A17\TwillEdgePurge\Support\Facades\TwillEdgePurge as TwillEdgePurgeFacade;
 
 class TwillEdgePurgeController extends ModuleController
 {
@@ -56,5 +57,12 @@ class TwillEdgePurgeController extends ModuleController
     private function namePrefix(): string|null
     {
         return config('twill.admin_route_name_prefix');
+    }
+
+    public function purgeAll(): RedirectResponse
+    {
+        TwillEdgePurgeFacade::purgeAll();
+
+        return back();
     }
 }

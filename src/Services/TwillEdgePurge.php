@@ -3,26 +3,10 @@
 namespace A17\TwillEdgePurge\Services;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
-use A17\EdgePurges\EdgePurges;
-use A17\TwillEdgePurge\Models\TwillEdgePurge as TwillEdgePurgeModel;
 
 class TwillEdgePurge
 {
-    use Config;
-    use Middleware;
-
-    protected array|null $config = null;
-
-    protected bool|null $isConfigured = null;
-
-    protected bool|null $protected = null;
-
-    protected TwillEdgePurgeModel|null $current = null;
-
-    protected string|null $nounce = null;
-
     public function runningOnTwill(): bool
     {
         $prefix = config('twill.admin_route_name_prefix') ?? 'admin.';
@@ -30,13 +14,38 @@ class TwillEdgePurge
         return Str::startsWith((string) Route::currentRouteName(), $prefix);
     }
 
-    public function getAvailableHeaders(): Collection
+    public function purgeAll()
     {
-        return (new Collection($this->config('headers')))->reject(fn($header) => !$header['available']);
+        
     }
 
-    public function nounce(): string
+    public function userMenu(): string
     {
-        return $this->nounce ??= Str::random(32);
+        if (!$this->userCanPurge()) {
+            return '';
+        }
+        
+        $flushUrl = route('twill.TwillEdgePurge.flush-all');
+
+        $flushLabel = twillTrans('Flush CDN');
+
+        return "<a href=\"{$flushUrl}\">{$flushLabel}</a>";
+    }
+
+    public function userCanPurge(): bool
+    {
+        return $this->runningOnTwill() && $this->cdnIsConfigured() && $this->userIsAllowed();
+    }
+
+    public function userIsAllowed(): bool
+    {
+        $role = auth()->guard('twill_users')->user()->role;
+
+        return in_array($role, config('twill-edge-purge.allowed.roles'));
+    }
+
+    public function cdnIsConfigured(): bool
+    {
+        return config('twill-edge-purge.enabled');
     }
 }
