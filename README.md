@@ -23,12 +23,39 @@ composer require area17/twill-edge-purge
 php artisan vendor:publish --provider="A17\TwillEdgePurge\ServiceProvider"
 ```
 
-## Disabling
+## Enabling
 
-This package is enabled and injects itself automatically. To disable it you just need to add to `.env`:
+This package is disabled by default. To enable it you just need to add to `.env`:
 
 ```dotenv
-TWILL_EDGE_PURGE_ENABLED=false
+TWILL_EDGE_PURGE_ENABLED=true
+```
+
+And set some user allowed roles:
+
+```dotenv
+TWILL_EDGE_PURGE_ALLOWED_ROLES=SUPERADMIN,ADMIN
+```
+
+## Add to the user menu
+
+In order to show the "Flush CDN" menu option, add the directive below to the `_user.blade.php` file:
+
+```blade
+@TwillEdgPurgeUserMenu
+```
+
+## Configure the CDN service
+
+```dotenv
+# Twill Edge Purge
+TWILL_EDGE_PURGE_SERVICE=cloudfront
+
+# CloudFront configuration
+CLOUDFRONT_KEY=
+CLOUDFRONT_SECRET=
+CLOUDFRONT_DISTRIBUTION=
+CLOUDFRONT_REGION=eu-west-1
 ```
 
 ## Contribute

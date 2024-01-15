@@ -4,6 +4,8 @@ namespace A17\TwillEdgePurge\Services;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
+use A17\TwillEdgePurge\Services\Cache\CloudFront;
+use A17\TwillEdgePurge\Services\Cache\TwillEdgePurgeCacheService;
 
 class TwillEdgePurge
 {
@@ -46,6 +48,19 @@ class TwillEdgePurge
 
     public function purgeAll()
     {
-        
+        $this->serviceFactory()->purgeAll();
+    }
+
+    public function serviceFactory(): TwillEdgePurgeCacheService
+    {
+        $service = config('twill-edge-purge.service.name');
+
+        if ($service === 'cloudfront') {
+            return app(CloudFront::class);
+        }
+
+        if ($service === 'akamai') {
+            return app(Akamai::class);
+        }
     }
 }
