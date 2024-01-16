@@ -118,6 +118,11 @@ class CloudFront implements TwillEdgePurgeCacheService
 
     public function purgeAll(): void
     {
-        $this->invalidate(['/*']);
+        $this->purge(['/*']);
+    }
+
+    public function purge(array $urls): void
+    {
+        $this->invalidate($urls);
     }
 }

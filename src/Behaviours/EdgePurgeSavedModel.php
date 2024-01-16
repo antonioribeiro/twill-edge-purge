@@ -8,10 +8,6 @@ trait EdgePurgeSavedModel
 {
     protected bool $edgePurgeEnabled = true;
 
-    protected string|null $edgePurgePageRoute = null;
-
-    protected bool $edgePurgeExtraUrls = [];
-
     public function edgePurgeAfterSave(): void
     {
         if ($this->edgePurgeEnabled) {
@@ -31,14 +27,20 @@ trait EdgePurgeSavedModel
 
     protected function getPageUrl(): string
     {
+        if (!property_exists($this, 'edgePurgePageRoute')) {
+            return null;
+        }
+
         if (empty($this->edgePurgePageRoute)) {
             return null;
         }
 
-        return route($this->edgePurgePageRoute, ['slug' => $this->slug]);
+        $slugParameter = $this->getEdgePurgeSlugParameter();
+
+        return route($this->edgePurgePageRoute, [$slugParameter => $this->slug]);
     }
 
-    protected function getEdgePurgeExtraUrls(): string
+    protected function getEdgePurgeExtraUrls(): array
     {
         return $this->edgePurgeExtraUrls;
     }
@@ -51,5 +53,16 @@ trait EdgePurgeSavedModel
     protected function disableEdgePurge(): array
     {
         return $this->edgePurgeEnabled = false;
+    }
+
+    protected function getEdgePurgeSlugParameter(): string
+    {
+        $parameter = 'slug';
+
+        if (property_exists($this, 'edgePurgePageSlugParameter') && filled($this->edgePurgePageSlugParameter)) {
+            $parameter = $this->edgePurgePageSlugParameter;
+        }
+
+        return $parameter;
     }
 }

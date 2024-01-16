@@ -46,6 +46,11 @@ class TwillEdgePurge
         return config('twill-edge-purge.enabled');
     }
 
+    public function purge(array $urls)
+    {
+        $this->serviceFactory()->purge($urls);
+    }
+
     public function purgeAll()
     {
         $this->serviceFactory()->purgeAll();

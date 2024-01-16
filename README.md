@@ -71,7 +71,7 @@ All CDN Services configurations are deferred to the `config/services.php` file. 
 ],
 ```
 
-## Adding checkbox to sidebar 
+## Adding checkbox to the edit page sidebar 
 Import the FormSideBar trait into your Controller:
 
 ```php
@@ -113,7 +113,10 @@ class Article extends Model
 
     protected string|null $edgePurgePageRoute = 'article.page';
 
-    public bool $edgePurgeExtraUrls = ['/blog', '/'];
+    protected array $edgePurgeExtraUrls = ['/blog', '/'];
+
+    /** If the slug parameter on the route is not 'slug', you can set it here */
+    protected string|null $edgePurgePageSlugParameter = 'type';
 ```
 
 ## Contribute
