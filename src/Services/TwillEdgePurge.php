@@ -75,6 +75,11 @@ class TwillEdgePurge
         $this->serviceFactory()->purgeAll();
     }
 
+    public function canDispatchInvalidations(): bool
+    {
+        return $this->serviceFactory()->canDispatchInvalidations();
+    }
+
     public function serviceFactory(): TwillEdgePurgeCacheService
     {
         $service = config('twill-edge-purge.service.name');

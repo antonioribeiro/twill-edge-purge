@@ -22,7 +22,7 @@ trait EdgePurgeSavedModel
 
     protected function getEdgePurgeUrls(): array
     {
-        return [$this->getPageUrl()] + $this->getEdgePurgeExtraUrls();
+        return array_merge([$this->getPageUrl()], $this->getEdgePurgeExtraUrls());
     }
 
     protected function getPageUrl(): string
@@ -37,7 +37,9 @@ trait EdgePurgeSavedModel
 
         $slugParameter = $this->getEdgePurgeSlugParameter();
 
-        return route($this->edgePurgePageRoute, [$slugParameter => $this->slug]);
+        $url = route($this->edgePurgePageRoute, [$slugParameter => $this->slug]);
+
+        return $this->extractUri($url);
     }
 
     protected function getEdgePurgeExtraUrls(): array
@@ -64,5 +66,16 @@ trait EdgePurgeSavedModel
         }
 
         return $parameter;
+    }
+
+    public function extractUri(string $url): string
+    {
+        $uri = parse_url($url)['path'] ?? null;
+
+        if (blank($uri)) {
+            return '/';
+        }
+
+        return $uri;
     }
 }

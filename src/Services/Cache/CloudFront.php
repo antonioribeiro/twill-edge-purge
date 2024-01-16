@@ -23,6 +23,17 @@ class CloudFront implements TwillEdgePurgeCacheService
 
     protected static string $defaultSdkVersion = '2016-01-13';
 
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+
+        $client = static::getClient();
+
+        if (is_object($client)) {
+            $this->client = $client;
+        }
+    }
+
     /**
      * @return string
      */
@@ -52,16 +63,6 @@ class CloudFront implements TwillEdgePurgeCacheService
                 'secret' => config('services.cloudfront.secret'),
             ],
         ]);
-    }
-
-    public function __construct(Config $config)
-    {
-        $this->config = $config;
-
-        $client = static::getClient();
-        if (is_object($client)) {
-            $this->client = $client;
-        }
     }
 
     /**
@@ -131,5 +132,10 @@ class CloudFront implements TwillEdgePurgeCacheService
     public function purge(array $urls): void
     {
         $this->invalidate($urls);
+    }
+
+    public function canDispatchInvalidations(): bool
+    {
+        return $this->client !== null && !$this->hasInProgressInvalidation();
     }
 }

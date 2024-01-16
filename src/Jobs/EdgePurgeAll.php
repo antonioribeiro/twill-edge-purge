@@ -19,6 +19,12 @@ class EdgePurgeAll implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
+        if (!TwillEdgePurge::canDispatchInvalidations()) {
+            $this->release(60); // seconds
+
+            return;
+        }
+
         TwillEdgePurge::purgeAllUrls();
     }
 }

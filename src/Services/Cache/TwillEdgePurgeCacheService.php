@@ -7,4 +7,6 @@ interface TwillEdgePurgeCacheService
     public function purge(array $urls): void;
 
     public function purgeAll(): void;
+
+    public function canDispatchInvalidations(): bool;
 }
