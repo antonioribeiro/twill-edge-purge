@@ -2,6 +2,7 @@
 
 namespace A17\TwillEdgePurge\Services;
 
+use A17\TwillEdgePurge\Jobs\EdgePurgeUrls;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use A17\TwillEdgePurge\Services\Cache\CloudFront;
@@ -48,10 +49,20 @@ class TwillEdgePurge
 
     public function purge(array $urls)
     {
-        $this->serviceFactory()->purge($urls);
+        EdgePurgeUrls::dispatch($urls);
     }
 
     public function purgeAll()
+    {
+        EdgePurgeUrls::dispatch('*');
+    }
+
+    public function purgeUrls(array $urls)
+    {
+        $this->serviceFactory()->purge($urls);
+    }
+
+    public function purgeAllUrls()
     {
         $this->serviceFactory()->purgeAll();
     }
