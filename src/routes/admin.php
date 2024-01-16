@@ -7,6 +7,3 @@ Route::get('/TwillEdgePurge/flush-all', [
     'as' => 'TwillEdgePurge.flush-all', 
     'uses' => \A17\TwillEdgePurge\Http\Controllers\TwillEdgePurgeController::class . '@purgeAll'
 ]);
-
-// @phpstan-ignore-next-line
-Route::module('TwillEdgePurge');
