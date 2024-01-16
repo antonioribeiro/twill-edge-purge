@@ -10,22 +10,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use A17\TwillEdgePurge\Support\Facades\TwillEdgePurge;
 
-class EdgePurgeUrls implements ShouldQueue, ShouldBeUnique
+class EdgePurgeAll implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
-    public array $urls;
-
-    public function __construct(array $urls)
-    {
-        $this->urls = $urls;
-    }
-
     public function handle(): void
     {
-        TwillEdgePurge::purgeUrls($this->urls);
+        TwillEdgePurge::purgeAllUrls();
     }
 }

@@ -11,7 +11,7 @@ use A17\TwillEdgePurge\Services\Cache\TwillEdgePurgeCacheService;
 
 class CloudFront implements TwillEdgePurgeCacheService
 {
-    protected $client;
+    protected CloudFrontClient|null $client;
 
     /**
      * @var Config
@@ -19,9 +19,9 @@ class CloudFront implements TwillEdgePurgeCacheService
     protected $config;
 
     // Added for backwards compatibility. Should be removed in future releases.
-    protected static $defaultRegion = 'us-east-1';
+    protected static string $defaultRegion = 'us-east-1';
 
-    protected static $defaultSdkVersion = '2016-01-13';
+    protected static string $defaultSdkVersion = '2016-01-13';
 
     /**
      * @return string
@@ -70,7 +70,7 @@ class CloudFront implements TwillEdgePurgeCacheService
      */
     public function invalidate($urls = ['/*'])
     {
-        if (! $this->hasInProgressInvalidation()) {
+        if (!$this->hasInProgressInvalidation()) {
             try {
                 $this->createInvalidationRequest($urls);
             } catch (\Exception $exception) {
@@ -86,9 +86,16 @@ class CloudFront implements TwillEdgePurgeCacheService
      */
     private function hasInProgressInvalidation()
     {
-        $list = $this->client->listInvalidations(['DistributionId' => $this->config->get('services.cloudfront.distribution')])->get('InvalidationList');
-        if (isset($list['Items']) && ! empty($list['Items'])) {
-            return Collection::make($list['Items'])->where('Status', 'InProgress')->count() > 0;
+        if ($this->client === null) {
+            return false;
+        }
+
+        $list = $this->client
+            ->listInvalidations(['DistributionId' => $this->config->get('services.cloudfront.distribution')])
+            ->get('InvalidationList');
+
+        if (isset($list['Items']) && !empty($list['Items'])) {
+            return (new Collection($list['Items']))->where('Status', 'InProgress')->count() > 0;
         }
 
         return false;

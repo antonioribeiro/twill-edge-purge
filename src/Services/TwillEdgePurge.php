@@ -2,9 +2,10 @@
 
 namespace A17\TwillEdgePurge\Services;
 
-use A17\TwillEdgePurge\Jobs\EdgePurgeUrls;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
+use A17\TwillEdgePurge\Jobs\EdgePurgeAll;
+use A17\TwillEdgePurge\Jobs\EdgePurgeUrls;
 use A17\TwillEdgePurge\Services\Cache\CloudFront;
 use A17\TwillEdgePurge\Services\Cache\TwillEdgePurgeCacheService;
 
@@ -22,7 +23,7 @@ class TwillEdgePurge
         if (!$this->userCanPurge()) {
             return '';
         }
-        
+
         $flushUrl = route('twill.TwillEdgePurge.flush-all');
 
         $flushLabel = twillTrans('Flush CDN');
@@ -37,9 +38,16 @@ class TwillEdgePurge
 
     public function userIsAllowed(): bool
     {
-        $role = auth()->guard('twill_users')->user()->role;
+        $user = auth()
+            ->guard('twill_users')
+            ->user();
 
-        return in_array($role, config('twill-edge-purge.allowed.roles'));
+        if ($user === null) {
+            return false;
+        }
+
+        /** @phpstan-ignore-next-line */
+        return in_array($user->role, config('twill-edge-purge.allowed.roles'));
     }
 
     public function cdnIsConfigured(): bool
@@ -47,22 +55,22 @@ class TwillEdgePurge
         return config('twill-edge-purge.enabled');
     }
 
-    public function purge(array $urls)
+    public function purge(array $urls): void
     {
         EdgePurgeUrls::dispatch($urls);
     }
 
-    public function purgeAll()
+    public function purgeAll(): void
     {
-        EdgePurgeUrls::dispatch('*');
+        EdgePurgeAll::dispatch();
     }
 
-    public function purgeUrls(array $urls)
+    public function purgeUrls(array $urls): void
     {
         $this->serviceFactory()->purge($urls);
     }
 
-    public function purgeAllUrls()
+    public function purgeAllUrls(): void
     {
         $this->serviceFactory()->purgeAll();
     }
@@ -75,8 +83,10 @@ class TwillEdgePurge
             return app(CloudFront::class);
         }
 
-        if ($service === 'akamai') {
-            return app(Akamai::class);
-        }
+        // if ($service === 'akamai') {
+        //     return app(Akamai::class);
+        // }
+
+        throw new \Exception("Unknown service {$service}");
     }
 }

@@ -38,7 +38,7 @@ class TwillEdgePurgeController extends ModuleController
     {
         $repository = new TwillEdgePurgeRepository(new TwillEdgePurge());
 
-        return parent::edit($repository->theOnlyOne()->id, $id);
+        return parent::edit($repository->theOnlyOne()->id);
     }
 
     protected function formData($request): array
