@@ -58,6 +58,19 @@ CLOUDFRONT_DISTRIBUTION=
 CLOUDFRONT_REGION=eu-west-1
 ```
 
+## CDN Sevices 
+All CDN Services configurations are deferred to the `config/services.php` file. You can copy here the ones that you will use:
+
+```php
+'cloudfront' => [
+    'key' => env('CLOUDFRONT_KEY', env('AWS_ACCESS_KEY_ID')),
+    'secret' => env('CLOUDFRONT_SECRET', env('AWS_SECRET_ACCESS_KEY')),
+    'sdk_version' => env('CLOUDFRONT_SDK_VERSION', env('AWS_SDK_VERSION', '2017-10-30')),
+    'region' => env('CLOUDFRONT_REGION', env('AWS_DEFAULT_REGION', 'us-east-1')),
+    'distribution' => env('CLOUDFRONT_DISTRIBUTION', env('AWS_CLOUDFRONT_DISTRIBUTION')),
+],
+```
+
 ## Contribute
 
 Please contribute to this project by submitting pull requests.
