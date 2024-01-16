@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use A17\TwillEdgePurge\Support\Facades\TwillEdgePurge;
+use Illuminate\Support\Carbon;
 
 class EdgePurgeUrls implements ShouldQueue, ShouldBeUnique
 {
@@ -26,18 +27,17 @@ class EdgePurgeUrls implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
-        \Log::info('Purging URLs: ' . implode(', ', $this->urls));
-
         if (!TwillEdgePurge::canDispatchInvalidations()) {
-            \Log::info('Deferred: ' . TwillEdgePurge::canDispatchInvalidations());
-
-            $this->release(60); // seconds
+            $this->release(20); // seconds
 
             return;
         }
 
-        \Log::info('Execute Purge');
-
         TwillEdgePurge::purgeUrls($this->urls);
+    }
+
+    public function retryUntil(): Carbon
+    {
+        return now()->addSeconds(20 * 2);
     }
 }
