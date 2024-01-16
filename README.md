@@ -71,6 +71,51 @@ All CDN Services configurations are deferred to the `config/services.php` file. 
 ],
 ```
 
+## Adding checkbox to sidebar 
+Import the FormSideBar trait into your Controller:
+
+```php
+use A17\TwillEdgePurge\Behaviours\FormSideBar;
+
+class ArticleController extends BaseModuleController
+{
+    use FormSideBar;
+```
+
+## Setting up the repository to purge after save
+Import the asldklaksd trait into your repository
+
+```php
+<?php
+
+namespace App\Twill\Capsules\Articles\Repositories;
+
+use A17\TwillEdgePurge\Behaviours\EdgePurgeAfterSave;
+
+class ArticleRepository extends ModuleRepository
+{
+    use EdgePurgeAfterSave;
+```
+
+## Setting up the model
+Import the Model trait and configure the route that generates the page URL, and optionally configure other URLs to be purged at the same time:
+
+```php
+<?php
+
+namespace App\Twill\Capsules\Articles\Models;
+
+use A17\TwillEdgePurge\Behaviours\EdgePurgeSavedModel;
+
+class Article extends Model
+{
+    use EdgePurgeSavedModel;
+
+    protected string|null $edgePurgePageRoute = 'article.page';
+
+    public bool $edgePurgeExtraUrls = ['/blog', '/'];
+```
+
 ## Contribute
 
 Please contribute to this project by submitting pull requests.
