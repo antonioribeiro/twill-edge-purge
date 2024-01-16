@@ -6,11 +6,11 @@ use A17\TwillEdgePurge\Support\Facades\TwillEdgePurge;
 
 trait EdgePurgeSavedModel
 {
-    public bool $edgePurgeEnabled = true;
+    protected bool $edgePurgeEnabled = true;
 
-    public string|null $edgePurgePageRoute = null;
+    protected string|null $edgePurgePageRoute = null;
 
-    public bool $edgePurgeExtraUrls = [];
+    protected bool $edgePurgeExtraUrls = [];
 
     public function edgePurgeAfterSave(): void
     {
