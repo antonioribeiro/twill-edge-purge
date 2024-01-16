@@ -13,7 +13,7 @@ trait FormSideBar
         $form = new Form();
 
         $form->push(Checkbox::make()
-             ->name('purge_this_page_on_edge')
+             ->name('edge_purge_purge_this_page')
              ->label('Purge this page on CDN after save'));
 
         return $form;

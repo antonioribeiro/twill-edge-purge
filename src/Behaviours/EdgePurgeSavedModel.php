@@ -2,28 +2,21 @@
 
 namespace A17\TwillEdgePurge\Behaviours;
 
-use A17\Twill\Services\Forms\Form;
-use A17\Twill\Services\Forms\Fields\Checkbox;
-use A17\Twill\Models\Contracts\TwillModelContract;
 use A17\TwillEdgePurge\Support\Facades\TwillEdgePurge;
 
 trait EdgePurgeSavedModel
 {
     public bool $edgePurgeEnabled = true;
 
-    public bool $edgePurgeExtraUrls = [];
-
     public string|null $edgePurgePageRoute = null;
 
-    public function save(array $options = [])
-    {
-        $saved = parent::save($options);
+    public bool $edgePurgeExtraUrls = [];
 
+    public function edgePurgeAfterSave(): void
+    {
         if ($this->edgePurgeEnabled) {
             $this->purgeOnEdge();
         }
-
-        return $saved;
     }
 
     protected function purgeOnEdge(): void
