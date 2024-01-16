@@ -14,6 +14,8 @@ trait EdgePurgeAfterSave
             return;
         }
 
-        $model->edgePurgeAfterSave();
+        if ($fields['edge_purge_purge_this_page'] ?? false) {
+            $model->edgePurgeAfterSave();
+        }
     }
 }
