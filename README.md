@@ -119,6 +119,9 @@ class Article extends Model
     protected string|null $edgePurgePageSlugParameter = 'type';
 ```
 
+## Jobs
+To not risk blocking users from using the CMS on every update, this package will enqueue two jobs to invalidate pages on the CDN: `EdgePurgeUrls` and `EdgePurgeAll`. This means that if your `QUEUE_CONNECTION` is not set to `sync`, you need to execute `php artisan queue:work` or have Horizon running in order to see the invalidations/purges being sent to your CDN service.
+
 ## Contribute
 
 Please contribute to this project by submitting pull requests.
