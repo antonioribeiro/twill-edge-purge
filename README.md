@@ -120,7 +120,7 @@ class Article extends Model
 ```
 
 ## Jobs
-To not risk blocking users from using the CMS on every update, this package will enqueue two jobs to invalidate pages on the CDN: `EdgePurgeUrls` and `EdgePurgeAll`. This means that if your `QUEUE_CONNECTION` is not set to `sync`, you need to execute `php artisan queue:work` or have Horizon running in order to see the invalidations/purges being sent to your CDN service.
+To not risk blocking users from using the CMS on every update, this package may enqueue one of these two jobs to invalidate pages on the CDN: `EdgePurgeUrls` and `EdgePurgeAll`. This means that if your `QUEUE_CONNECTION` is not set to `sync`, you need to execute `php artisan queue:work` or have [Laravel Horizon](https://laravel.com/docs/10.x/horizon) running in order to see the invalidations/purges being sent to your CDN service.
 
 ## Contribute
 
