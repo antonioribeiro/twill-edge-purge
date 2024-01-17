@@ -23,7 +23,7 @@
         "sort-package-json": "~1.57.0"
     },
     "engines": {
-        "node": "~16",
-        "npm": "~8"
+        "node": "~20",
+        "npm": "~10"
     }
 }
