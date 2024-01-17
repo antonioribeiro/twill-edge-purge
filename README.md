@@ -4,7 +4,7 @@ This Twill Capsule is intended to enable developers handle Edge cache purges.
 
 ## Screenshots
 
-### CMS configuration
+### Features on Twill
 ![screenshot 1](docs/screenshot01.png)
 
 ![screenshot 2](docs/screenshot02.png)
