@@ -120,7 +120,7 @@ class Article extends Model
     protected string|null $edgePurgePageSlugParameter = 'type';
 ```
 
-## Purging
+## Purging extra pages
 When purging the URL for the current page, you can tell Twill to purge other related urls by declaring the `$edgePurgeExtraUrls` property. This is a handy feature when you are purging a page (a blog post) that may be present on a listing page (the /blog page).
 
 ```php
