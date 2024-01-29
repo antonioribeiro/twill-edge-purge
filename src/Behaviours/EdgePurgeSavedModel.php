@@ -44,7 +44,7 @@ trait EdgePurgeSavedModel
 
     protected function getEdgePurgeExtraUrls(): array
     {
-        return $this->edgePurgeExtraUrls;
+        return [];
     }
 
     protected function enableEdgePurge(): array
