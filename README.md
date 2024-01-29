@@ -113,10 +113,24 @@ class Article extends Model
 
     protected string|null $edgePurgePageRoute = 'article.page';
 
+    /** You can add extra ulrs to be purged at the same you purge */
     protected array $edgePurgeExtraUrls = ['/blog', '/'];
 
     /** If the slug parameter on the route is not 'slug', you can set it here */
     protected string|null $edgePurgePageSlugParameter = 'type';
+```
+
+## Purging
+When purging the URL for the current page, you can tell Twill to purge other related urls by declaring the `$edgePurgeExtraUrls` property. This is a handy feature when you are purging a page (a blog post) that may be present on a listing page (the /blog page).
+
+```php
+<?php
+
+class Article extends Model
+{
+    use EdgePurgeSavedModel;
+
+    protected array $edgePurgeExtraUrls = ['/blog', '/'];
 ```
 
 ## Jobs
