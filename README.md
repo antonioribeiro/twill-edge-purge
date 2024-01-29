@@ -113,9 +113,6 @@ class Article extends Model
 
     protected string|null $edgePurgePageRoute = 'article.page';
 
-    /** You can add extra ulrs to be purged at the same you purge */
-    protected array $edgePurgeExtraUrls = ['/blog', '/'];
-
     /** If the slug parameter on the route is not 'slug', you can set it here */
     protected string|null $edgePurgePageSlugParameter = 'type';
 ```
